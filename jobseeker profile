@@ -1,0 +1,72 @@
+{
+  "name": "JobSeekerProfile",
+  "type": "object",
+  "properties": {
+    "full_name": {
+      "type": "string",
+      "description": "Job seeker's full name"
+    },
+    "headline": {
+      "type": "string",
+      "description": "Professional headline"
+    },
+    "bio": {
+      "type": "string",
+      "description": "Professional bio"
+    },
+    "skills": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Professional skills"
+    },
+    "experience_level": {
+      "type": "string",
+      "enum": [
+        "entry",
+        "mid",
+        "senior",
+        "lead"
+      ],
+      "description": "Experience level"
+    },
+    "location": {
+      "type": "string",
+      "description": "Current location"
+    },
+    "phone": {
+      "type": "string",
+      "description": "Contact phone"
+    },
+    "linkedin": {
+      "type": "string",
+      "description": "LinkedIn profile URL"
+    },
+    "resume_url": {
+      "type": "string",
+      "description": "Resume file URL"
+    },
+    "portfolio_url": {
+      "type": "string",
+      "description": "Portfolio URL"
+    },
+    "desired_salary": {
+      "type": "string",
+      "description": "Desired salary range"
+    },
+    "availability": {
+      "type": "string",
+      "enum": [
+        "immediate",
+        "two_weeks",
+        "one_month",
+        "flexible"
+      ],
+      "description": "Availability to start"
+    }
+  },
+  "required": [
+    "full_name"
+  ]
+}
