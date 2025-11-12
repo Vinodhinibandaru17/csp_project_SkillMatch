@@ -1,0 +1,148 @@
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { createPageUrl } from "@/utils";
+import { useQuery } from "@tanstack/react-query";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Briefcase, Eye, Clock, Search } from "lucide-react";
+
+export default function JobSeekerDashboard() {
+  const navigate = useNavigate();
+
+  const { data: user } = useQuery({
+    queryKey: ['currentUser'],
+    queryFn: () => base44.auth.me(),
+  });
+
+  const { data: applications = [] } = useQuery({
+    queryKey: ['my-applications'],
+    queryFn: async () => {
+      const currentUser = await base44.auth.me();
+      return base44.entities.Application.filter({ created_by: currentUser.email }, '-created_date');
+    },
+    initialData: [],
+  });
+
+  const { data: jobs = [] } = useQuery({
+    queryKey: ['available-jobs'],
+    queryFn: () => base44.entities.JobListing.filter({ status: 'active' }),
+    initialData: [],
+  });
+
+  const totalApplications = applications.length;
+  const availableJobs = jobs.length;
+  const pendingApplications = applications.filter(a => a.status === 'pending').length;
+
+  return (
+    <div className="min-h-screen bg-slate-50">
+      {/* Header */}
+      <div className="bg-gradient-to-r from-blue-600 to-teal-500 text-white px-8 py-12">
+        <div className="max-w-7xl mx-auto">
+          <h1 className="text-3xl font-bold mb-2">My Dashboard</h1>
+          <p className="text-blue-100">Track your job applications and opportunities</p>
+        </div>
+      </div>
+
+      <div className="p-8 max-w-7xl mx-auto -mt-8">
+        {/* Stats Cards */}
+        <div className="grid md:grid-cols-3 gap-6 mb-8">
+          <Card className="shadow-lg">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-slate-600 mb-1">Applications</p>
+                  <p className="text-3xl font-bold text-slate-900">{totalApplications}</p>
+                </div>
+                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                  <Briefcase className="w-6 h-6 text-blue-600" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="shadow-lg">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-slate-600 mb-1">Available Jobs</p>
+                  <p className="text-3xl font-bold text-slate-900">{availableJobs}</p>
+                </div>
+                <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                  <Eye className="w-6 h-6 text-green-600" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="shadow-lg">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-slate-600 mb-1">Pending</p>
+                  <p className="text-3xl font-bold text-slate-900">{pendingApplications}</p>
+                </div>
+                <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                  <Clock className="w-6 h-6 text-orange-600" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* My Applications */}
+        <Card>
+          <CardContent className="p-6">
+            <h2 className="text-xl font-bold text-slate-900 mb-6">My Applications</h2>
+            
+            {applications.length === 0 ? (
+              <div className="py-16 text-center">
+                <div className="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Briefcase className="w-10 h-10 text-slate-400" />
+                </div>
+                <h3 className="text-lg font-semibold text-slate-900 mb-2">No applications yet</h3>
+                <p className="text-slate-600 mb-6">
+                  Start exploring jobs and apply to opportunities
+                </p>
+                <Button 
+                  onClick={() => navigate(createPageUrl("BrowseJobs"))}
+                  className="bg-blue-600 hover:bg-blue-700"
+                >
+                  <Search className="w-5 h-5 mr-2" />
+                  Browse Jobs
+                </Button>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {applications.map((app) => (
+                  <div 
+                    key={app.id}
+                    className="border border-slate-200 rounded-lg p-6 hover:border-blue-300 hover:shadow-md transition-all"
+                  >
+                    <div className="flex justify-between items-start mb-3">
+                      <div>
+                        <h3 className="text-lg font-bold text-slate-900 mb-1">{app.job_title}</h3>
+                        <p className="text-slate-600 font-medium">{app.company}</p>
+                      </div>
+                      <span className={`px-3 py-1 rounded-full text-sm font-medium ${
+                        app.status === 'pending' ? 'bg-yellow-100 text-yellow-700' :
+                        app.status === 'reviewed' ? 'bg-blue-100 text-blue-700' :
+                        app.status === 'interviewing' ? 'bg-purple-100 text-purple-700' :
+                        app.status === 'accepted' ? 'bg-green-100 text-green-700' :
+                        'bg-red-100 text-red-700'
+                      }`}>
+                        {app.status}
+                      </span>
+                    </div>
+                    <p className="text-sm text-slate-600">
+                      Applied on {new Date(app.created_date).toLocaleDateString()}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+}
