@@ -1,0 +1,81 @@
+{
+  "name": "JobListing",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Job title"
+    },
+    "company": {
+      "type": "string",
+      "description": "Company name"
+    },
+    "description": {
+      "type": "string",
+      "description": "Job description"
+    },
+    "category": {
+      "type": "string",
+      "description": "Job category"
+    },
+    "location": {
+      "type": "string",
+      "description": "City/Location"
+    },
+    "full_address": {
+      "type": "string",
+      "description": "Complete address"
+    },
+    "employment_type": {
+      "type": "string",
+      "enum": [
+        "full_time",
+        "part_time",
+        "contract",
+        "freelance",
+        "internship"
+      ],
+      "description": "Type of employment"
+    },
+    "salary_range": {
+      "type": "string",
+      "description": "Salary range"
+    },
+    "required_skills": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Required skills for the position"
+    },
+    "experience_required": {
+      "type": "string",
+      "description": "Experience required"
+    },
+    "qualification_required": {
+      "type": "string",
+      "description": "Qualification required"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "closed",
+        "draft"
+      ],
+      "default": "active",
+      "description": "Job listing status"
+    },
+    "application_deadline": {
+      "type": "string",
+      "format": "date",
+      "description": "Application deadline"
+    }
+  },
+  "required": [
+    "title",
+    "company",
+    "description",
+    "location"
+  ]
+}
