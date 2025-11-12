@@ -1,0 +1,60 @@
+{
+  "name": "Application",
+  "type": "object",
+  "properties": {
+    "job_listing_id": {
+      "type": "string",
+      "description": "ID of the job listing"
+    },
+    "job_seeker_profile_id": {
+      "type": "string",
+      "description": "ID of the job seeker profile"
+    },
+    "applicant_name": {
+      "type": "string",
+      "description": "Name of applicant"
+    },
+    "applicant_email": {
+      "type": "string",
+      "description": "Email of applicant"
+    },
+    "job_title": {
+      "type": "string",
+      "description": "Job title applied for"
+    },
+    "company": {
+      "type": "string",
+      "description": "Company name"
+    },
+    "cover_letter": {
+      "type": "string",
+      "description": "Cover letter text"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "reviewed",
+        "interviewing",
+        "accepted",
+        "rejected"
+      ],
+      "default": "pending",
+      "description": "Application status"
+    },
+    "match_score": {
+      "type": "number",
+      "description": "Skill match score (0-100)"
+    },
+    "employer_notes": {
+      "type": "string",
+      "description": "Notes from employer"
+    }
+  },
+  "required": [
+    "job_listing_id",
+    "applicant_name",
+    "applicant_email",
+    "job_title"
+  ]
+}
