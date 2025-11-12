@@ -1,0 +1,114 @@
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { createPageUrl } from "@/utils";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Briefcase, Search, CheckCircle2 } from "lucide-react";
+
+export default function RoleSelection() {
+  const navigate = useNavigate();
+
+  const handleSelectRole = async (userType) => {
+    try {
+      await base44.auth.updateMe({ user_type: userType });
+      
+      if (userType === "employer") {
+        navigate(createPageUrl("EmployerDashboard"));
+      } else {
+        navigate(createPageUrl("JobSeekerDashboard"));
+      }
+    } catch (error) {
+      console.error("Error setting user type:", error);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-600 via-blue-500 to-teal-500 flex items-center justify-center p-4">
+      <div className="max-w-5xl w-full">
+        <div className="text-center mb-12">
+          <div className="w-20 h-20 bg-white rounded-2xl shadow-lg flex items-center justify-center mx-auto mb-6">
+            <Briefcase className="w-10 h-10 text-blue-600" />
+          </div>
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
+            Welcome to SkillMatch
+          </h1>
+          <p className="text-xl text-blue-100">
+            Let's get started by choosing your role
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-6">
+          {/* Employer Card */}
+          <Card className="border-none shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105">
+            <CardContent className="p-8">
+              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <Briefcase className="w-8 h-8 text-blue-600" />
+              </div>
+              <h2 className="text-2xl font-bold text-slate-900 text-center mb-3">
+                I'm an Employer
+              </h2>
+              <p className="text-slate-600 text-center mb-6">
+                Looking to hire talented professionals
+              </p>
+              <ul className="space-y-3 mb-8">
+                <li className="flex items-center gap-3 text-slate-700">
+                  <CheckCircle2 className="w-5 h-5 text-blue-600 flex-shrink-0" />
+                  <span>Post job openings and requirements</span>
+                </li>
+                <li className="flex items-center gap-3 text-slate-700">
+                  <CheckCircle2 className="w-5 h-5 text-blue-600 flex-shrink-0" />
+                  <span>Find qualified candidates</span>
+                </li>
+                <li className="flex items-center gap-3 text-slate-700">
+                  <CheckCircle2 className="w-5 h-5 text-blue-600 flex-shrink-0" />
+                  <span>Manage hiring process efficiently</span>
+                </li>
+              </ul>
+              <Button
+                onClick={() => handleSelectRole("employer")}
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white py-6 text-lg"
+              >
+                Continue as Employer
+              </Button>
+            </CardContent>
+          </Card>
+
+          {/* Job Seeker Card */}
+          <Card className="border-none shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105">
+            <CardContent className="p-8">
+              <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <Search className="w-8 h-8 text-purple-600" />
+              </div>
+              <h2 className="text-2xl font-bold text-slate-900 text-center mb-3">
+                I'm a Job Seeker
+              </h2>
+              <p className="text-slate-600 text-center mb-6">
+                Searching for my next opportunity
+              </p>
+              <ul className="space-y-3 mb-8">
+                <li className="flex items-center gap-3 text-slate-700">
+                  <CheckCircle2 className="w-5 h-5 text-purple-600 flex-shrink-0" />
+                  <span>Browse matching job opportunities</span>
+                </li>
+                <li className="flex items-center gap-3 text-slate-700">
+                  <CheckCircle2 className="w-5 h-5 text-purple-600 flex-shrink-0" />
+                  <span>Showcase your skills and experience</span>
+                </li>
+                <li className="flex items-center gap-3 text-slate-700">
+                  <CheckCircle2 className="w-5 h-5 text-purple-600 flex-shrink-0" />
+                  <span>Connect with top employers</span>
+                </li>
+              </ul>
+              <Button
+                onClick={() => handleSelectRole("job_seeker")}
+                className="w-full bg-purple-600 hover:bg-purple-700 text-white py-6 text-lg"
+              >
+                Continue as Job Seeker
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </div>
+  );
+}
